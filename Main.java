@@ -19,11 +19,46 @@
  along with NameScraper.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-public class Main {
+// for getting user input
+import java.util.Scanner;
 
+// for input validation
+import java.util.regex.Pattern; 
+import java.util.regex.Matcher;
+
+
+public class Main {
+	private static Scanner stdin = new Scanner(System.in);
+	
+	// entry point
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		System.out.println("Returning " + inputUserName());
 
 	}
-
+	
+	// get and validate the input
+	private static String inputUserName() { // it is probably not correct OO programming to put this here... TODO: don't do this 
+		String input;
+		Pattern emailPattern = Pattern.compile("^[A-Za-z]+([0-9]+[a-zA-Z][0-9]+)?@(ecs.)?(soton|southampton).ac.uk$"); // people can't have non-Latin characters, right?
+		Pattern userNamePattern = Pattern.compile("^[A-Za-z]+([0-9]+[a-zA-Z][0-9]+)?$");
+		Matcher emailMatcher;
+		Matcher userNameMatcher;
+		
+		while (true) { // loop forever until correct input
+			System.out.print("Please enter either an email address or a username to query...");
+			input = stdin.nextLine();
+			
+			emailMatcher = emailPattern.matcher(input);
+			userNameMatcher = userNamePattern.matcher(input);
+			
+			if (emailMatcher.find()) { // we were given a valid email
+				return input.substring(0, input.indexOf("@")); // this has to work or the regex wouldn't have matched
+			} else if (userNameMatcher.find()) { // we were given a valid username
+				return input;
+			} else { // we don't like the input
+				System.out.println("Sorry I did not understand your input. Try again."); // this will loop around
+			}
+			
+		}
+	}
 }
