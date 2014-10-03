@@ -32,15 +32,21 @@ public class Main {
 	
 	// entry point
 	public static void main(String[] args) {
-		System.out.println("Returning " + inputUserName());
-
+		pageScraper myPageScraper = new pageScraper(inputUserName());
+		System.out.println("Their name is " + myPageScraper.getName());
 	}
 	
 	// get and validate the input
 	private static String inputUserName() { // it is probably not correct OO programming to put this here... TODO: don't do this 
 		String input;
-		Pattern emailPattern = Pattern.compile("^[A-Za-z]+([0-9]+[a-zA-Z][0-9]+)?@(ecs.)?(soton|southampton).ac.uk$"); // people can't have non-Latin characters, right?
-		Pattern userNamePattern = Pattern.compile("^[A-Za-z]+([0-9]+[a-zA-Z][0-9]+)?$");
+		
+		// Note: student lookups disabled because they require a login
+		//Pattern emailPattern = Pattern.compile("^[A-Za-z]+([0-9]+[a-zA-Z][0-9]+)?@(ecs.)?(soton|southampton).ac.uk$"); // people can't have non-Latin characters, right?
+		//Pattern userNamePattern = Pattern.compile("^[A-Za-z]+([0-9]+[a-zA-Z][0-9]+)?$");
+		
+		Pattern emailPattern = Pattern.compile("^[\\w]{2,4}@(ecs.)?(soton|southampton).ac.uk$");
+		Pattern userNamePattern = Pattern.compile("^[\\w]{2,4}$");
+		
 		Matcher emailMatcher;
 		Matcher userNameMatcher;
 		
@@ -57,6 +63,7 @@ public class Main {
 				return input;
 			} else { // we don't like the input
 				System.out.println("Sorry I did not understand your input. Try again."); // this will loop around
+				System.out.println("Note that it is currently impossible to look up students because that requires login.");
 			}
 			
 		}
